@@ -267,5 +267,3 @@ class ClientService {
 }
 
 export default new ClientService();
-
-export default new ClientService();

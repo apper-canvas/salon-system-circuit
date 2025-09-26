@@ -255,5 +255,3 @@ class ServiceService {
 }
 
 export default new ServiceService();
-
-export default new ServiceService();
