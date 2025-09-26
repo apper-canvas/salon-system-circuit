@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
 import { format } from "date-fns";
+import { AuthContext } from "../../App";
 
 const Header = ({ onMenuClick, title = "Dashboard" }) => {
+  const { logout } = useContext(AuthContext);
   const currentDate = new Date();
 
   return (
@@ -29,7 +31,7 @@ const Header = ({ onMenuClick, title = "Dashboard" }) => {
             </div>
           </div>
 
-          {/* Quick actions */}
+{/* Quick actions */}
           <div className="flex items-center space-x-3">
             <Button variant="accent" size="sm" className="hidden sm:flex">
               <ApperIcon name="Plus" className="h-4 w-4 mr-2" />
@@ -38,6 +40,11 @@ const Header = ({ onMenuClick, title = "Dashboard" }) => {
             
             <Button variant="ghost" size="sm">
               <ApperIcon name="Bell" className="h-5 w-5" />
+            </Button>
+
+            <Button variant="ghost" size="sm" onClick={logout}>
+              <ApperIcon name="LogOut" className="h-4 w-4 mr-2" />
+              Logout
             </Button>
             
             <div className="hidden sm:flex items-center ml-4 pl-4 border-l border-secondary-200">

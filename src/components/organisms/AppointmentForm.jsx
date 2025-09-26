@@ -12,7 +12,7 @@ const AppointmentForm = ({
   onSubmit, 
   onCancel 
 }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     clientId: "",
     staffId: "",
     serviceId: "",
@@ -25,13 +25,13 @@ const AppointmentForm = ({
   useEffect(() => {
     if (appointment) {
       setFormData({
-        clientId: appointment.clientId,
-        staffId: appointment.staffId,
-        serviceId: appointment.serviceId,
-        date: appointment.date,
-        startTime: appointment.startTime,
-        status: appointment.status,
-        notes: appointment.notes || ""
+        clientId: appointment.client_id_c?.Id || appointment.clientId || "",
+        staffId: appointment.staff_id_c?.Id || appointment.staffId || "",
+        serviceId: appointment.service_id_c?.Id || appointment.serviceId || "",
+        date: appointment.date_c || appointment.date || "",
+        startTime: appointment.start_time_c || appointment.startTime || "",
+        status: appointment.status_c || appointment.status || "pending",
+        notes: appointment.notes_c || appointment.notes || ""
       });
     }
   }, [appointment]);
@@ -44,18 +44,22 @@ const AppointmentForm = ({
       return;
     }
 
-    // Calculate end time based on service duration
+// Calculate end time based on service duration
     const selectedService = services.find(s => s.Id === parseInt(formData.serviceId));
     if (selectedService) {
+      const duration = selectedService.duration_c || selectedService.duration || 60;
       const startTime = new Date(`2024-01-01T${formData.startTime}`);
-      const endTime = new Date(startTime.getTime() + (selectedService.duration * 60000));
+      const endTime = new Date(startTime.getTime() + (duration * 60000));
       
       const appointmentData = {
-        ...formData,
-        clientId: parseInt(formData.clientId),
-        staffId: parseInt(formData.staffId),
-        serviceId: parseInt(formData.serviceId),
-        endTime: endTime.toTimeString().slice(0, 5)
+        client_id_c: parseInt(formData.clientId),
+        staff_id_c: parseInt(formData.staffId),
+        service_id_c: parseInt(formData.serviceId),
+        date_c: formData.date,
+        start_time_c: formData.startTime,
+        end_time_c: endTime.toTimeString().slice(0, 5),
+        status_c: formData.status,
+        notes_c: formData.notes
       };
 
       try {
@@ -100,9 +104,9 @@ const AppointmentForm = ({
               required
             >
               <option value="">Select a client</option>
-              {clients.map(client => (
+{clients.map(client => (
                 <option key={client.Id} value={client.Id}>
-                  {client.name}
+                  {client.name_c || client.name}
                 </option>
               ))}
             </select>
@@ -120,9 +124,9 @@ const AppointmentForm = ({
               required
             >
               <option value="">Select a service</option>
-              {services.map(service => (
+{services.map(service => (
                 <option key={service.Id} value={service.Id}>
-                  {service.name} - ${service.price} ({service.duration} min)
+                  {service.name_c || service.name} - ${service.price_c || service.price} ({service.duration_c || service.duration} min)
                 </option>
               ))}
             </select>
@@ -140,9 +144,9 @@ const AppointmentForm = ({
               required
             >
               <option value="">Select staff member</option>
-              {staff.map(member => (
+{staff.map(member => (
                 <option key={member.Id} value={member.Id}>
-                  {member.name} - {member.role}
+                  {member.name_c || member.name} - {member.role_c || member.role}
                 </option>
               ))}
             </select>

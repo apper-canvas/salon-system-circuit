@@ -1,82 +1,282 @@
-import staffData from "@/services/mockData/staff.json";
+import { toast } from "react-toastify";
 
 class StaffService {
   constructor() {
-    this.staff = [...staffData];
+    this.tableName = 'staff_c';
+    this.apperClient = null;
+    this.initializeClient();
+  }
+
+  initializeClient() {
+    if (typeof window !== 'undefined' && window.ApperSDK) {
+      const { ApperClient } = window.ApperSDK;
+      this.apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+    }
   }
 
   async getAll() {
-    await this.delay(250);
-    return [...this.staff];
+    try {
+      if (!this.apperClient) this.initializeClient();
+      
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "name_c"}},
+          {"field": {"Name": "role_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "schedule_c"}}
+        ]
+      };
+
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching staff:", error?.response?.data?.message || error);
+      return [];
+    }
   }
 
   async getById(id) {
-    await this.delay(200);
-    const staffMember = this.staff.find(s => s.Id === parseInt(id));
-    if (!staffMember) {
-      throw new Error("Staff member not found");
+    try {
+      if (!this.apperClient) this.initializeClient();
+      
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "name_c"}},
+          {"field": {"Name": "role_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "schedule_c"}}
+        ]
+      };
+
+      const response = await this.apperClient.getRecordById(this.tableName, parseInt(id), params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching staff member ${id}:`, error?.response?.data?.message || error);
+      return null;
     }
-    return { ...staffMember };
   }
 
   async create(staffData) {
-    await this.delay(400);
-    const newStaffMember = {
-      Id: Math.max(...this.staff.map(s => s.Id)) + 1,
-      ...staffData,
-      schedule: staffData.schedule || {}
-    };
-    this.staff.push(newStaffMember);
-    return { ...newStaffMember };
+    try {
+      if (!this.apperClient) this.initializeClient();
+      
+      const scheduleText = typeof staffData.schedule === 'object' 
+        ? JSON.stringify(staffData.schedule) 
+        : (staffData.schedule_c || staffData.schedule || "");
+
+      const params = {
+        records: [{
+          Name: staffData.name_c || staffData.name || "",
+          name_c: staffData.name_c || staffData.name || "",
+          role_c: staffData.role_c || staffData.role || "",
+          email_c: staffData.email_c || staffData.email || "",
+          phone_c: staffData.phone_c || staffData.phone || "",
+          schedule_c: scheduleText
+        }]
+      };
+
+      const response = await this.apperClient.createRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} staff records:`, failed);
+          failed.forEach(record => {
+            if (record.errors) {
+              record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            }
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successful.length > 0 ? successful[0].data : null;
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("Error creating staff member:", error?.response?.data?.message || error);
+      return null;
+    }
   }
 
   async update(id, staffData) {
-    await this.delay(300);
-    const index = this.staff.findIndex(s => s.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Staff member not found");
+    try {
+      if (!this.apperClient) this.initializeClient();
+      
+      const scheduleText = typeof staffData.schedule === 'object' 
+        ? JSON.stringify(staffData.schedule) 
+        : (staffData.schedule_c || staffData.schedule || "");
+      
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          Name: staffData.name_c || staffData.name || "",
+          name_c: staffData.name_c || staffData.name || "",
+          role_c: staffData.role_c || staffData.role || "",
+          email_c: staffData.email_c || staffData.email || "",
+          phone_c: staffData.phone_c || staffData.phone || "",
+          schedule_c: scheduleText
+        }]
+      };
+
+      const response = await this.apperClient.updateRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} staff records:`, failed);
+          failed.forEach(record => {
+            if (record.errors) {
+              record.errors.forEach(error => toast.error(`${error.fieldLabel}: ${error}`));
+            }
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successful.length > 0 ? successful[0].data : null;
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("Error updating staff member:", error?.response?.data?.message || error);
+      return null;
     }
-    
-    this.staff[index] = {
-      ...this.staff[index],
-      ...staffData
-    };
-    
-    return { ...this.staff[index] };
   }
 
   async delete(id) {
-    await this.delay(250);
-    const index = this.staff.findIndex(s => s.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Staff member not found");
+    try {
+      if (!this.apperClient) this.initializeClient();
+      
+      const params = { 
+        RecordIds: [parseInt(id)]
+      };
+
+      const response = await this.apperClient.deleteRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return false;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} staff records:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        return successful.length > 0;
+      }
+      
+      return true;
+    } catch (error) {
+      console.error("Error deleting staff member:", error?.response?.data?.message || error);
+      return false;
     }
-    
-    const deletedStaffMember = this.staff.splice(index, 1)[0];
-    return { ...deletedStaffMember };
   }
 
   async getByRole(role) {
-    await this.delay(200);
-    return this.staff.filter(member => member.role === role)
-      .map(member => ({ ...member }));
+    try {
+      if (!this.apperClient) this.initializeClient();
+      
+      const params = {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "name_c"}},
+          {"field": {"Name": "role_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "schedule_c"}}
+        ],
+        where: [{"FieldName": "role_c", "Operator": "EqualTo", "Values": [role]}]
+      };
+
+      const response = await this.apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching staff by role:", error?.response?.data?.message || error);
+      return [];
+    }
   }
 
   async getAvailableStaff(date, time) {
-    await this.delay(300);
-    // Mock availability check - in real app would check against appointments
-    return this.staff.filter(member => {
-      const dayOfWeek = new Date(date).toLocaleLowerCase().substring(0, 3);
-      const schedule = member.schedule[dayOfWeek];
-      if (schedule === "off" || !schedule) return false;
+    try {
+      const allStaff = await this.getAll();
       
-      const [startTime, endTime] = schedule;
-      return time >= startTime && time <= endTime;
-    }).map(member => ({ ...member }));
-  }
-
-  delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+      return allStaff.filter(member => {
+        try {
+          const schedule = member.schedule_c ? JSON.parse(member.schedule_c) : {};
+          const dayOfWeek = new Date(date).toLocaleDateString('en', { weekday: 'long' }).toLowerCase();
+          const daySchedule = schedule[dayOfWeek];
+          
+          if (daySchedule === "off" || !daySchedule) return false;
+          
+          if (Array.isArray(daySchedule) && daySchedule.length >= 2) {
+            const [startTime, endTime] = daySchedule;
+            return time >= startTime && time <= endTime;
+          }
+          
+          return false;
+        } catch (error) {
+          console.error("Error parsing schedule for staff member:", member.Id, error);
+          return false;
+        }
+      });
+    } catch (error) {
+      console.error("Error getting available staff:", error);
+      return [];
+    }
   }
 }
 

@@ -36,9 +36,9 @@ const Staff = () => {
   if (error) return <Error onRetry={loadStaff} />;
 
   const filteredStaff = staff.filter(member =>
-    member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    member.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    member.email.toLowerCase().includes(searchTerm.toLowerCase())
+(member.name_c || member.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (member.role_c || member.role || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (member.email_c || member.email || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const getRoleIcon = (role) => {
@@ -137,7 +137,7 @@ const Staff = () => {
             <div>
               <p className="text-sm text-secondary-600">Stylists</p>
               <p className="text-2xl font-bold text-primary-800 font-display">
-                {staff.filter(member => member.role === "Stylist").length}
+{staff.filter(member => (member.role_c || member.role) === "Stylist").length}
               </p>
             </div>
             <ApperIcon name="Scissors" className="h-8 w-8 text-accent-600" />
@@ -181,13 +181,13 @@ const Staff = () => {
             
             return (
               <Card key={member.Id} className="p-6 hover:scale-[1.02] transition-transform duration-200">
-                <div className="flex items-start justify-between mb-4">
+<div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="bg-gradient-to-br from-primary-600 to-accent-500 p-3 rounded-full">
-                      <ApperIcon name={getRoleIcon(member.role)} className="h-6 w-6 text-white" />
+                      <ApperIcon name={getRoleIcon(member.role_c || member.role)} className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-primary-800">{member.name}</h3>
+                      <h3 className="font-semibold text-primary-800">{member.name_c || member.name}</h3>
                       <Badge variant={getRoleColor(member.role)} className="mt-1">
                         {member.role}
                       </Badge>
@@ -201,11 +201,11 @@ const Staff = () => {
                 <div className="space-y-2 mb-4">
                   <p className="text-sm text-secondary-600 flex items-center">
                     <ApperIcon name="Mail" className="h-4 w-4 mr-2" />
-                    {member.email}
+{member.email_c || member.email}
                   </p>
-                  <p className="text-sm text-secondary-600 flex items-center">
+                  <p className="text-sm text-secondary-600 flex items-center mt-1">
                     <ApperIcon name="Phone" className="h-4 w-4 mr-2" />
-                    {member.phone}
+                    {member.phone_c || member.phone}
                   </p>
                 </div>
 

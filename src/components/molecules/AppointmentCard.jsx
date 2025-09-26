@@ -30,22 +30,22 @@ const AppointmentCard = ({
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <h3 className="font-semibold text-primary-800">{client?.name}</h3>
-            <Badge variant={getStatusVariant(appointment.status)}>
-              {appointment.status}
+<h3 className="font-semibold text-primary-800">{client?.name_c || client?.name}</h3>
+            <Badge variant={getStatusVariant(appointment.status_c || appointment.status)}>
+              {appointment.status_c || appointment.status}
             </Badge>
           </div>
           <p className="text-sm text-secondary-600 mb-1">
-            <ApperIcon name="Clock" className="inline h-4 w-4 mr-1" />
-            {format(new Date(`2024-01-01T${appointment.startTime}`), "h:mm a")} - {format(new Date(`2024-01-01T${appointment.endTime}`), "h:mm a")}
+<ApperIcon name="Clock" className="inline h-4 w-4 mr-1" />
+            {format(new Date(`2024-01-01T${appointment.start_time_c || appointment.startTime}`), "h:mm a")} - {format(new Date(`2024-01-01T${appointment.end_time_c || appointment.endTime}`), "h:mm a")}
           </p>
           <p className="text-sm text-secondary-600 mb-1">
             <ApperIcon name="Scissors" className="inline h-4 w-4 mr-1" />
-            {service?.name} (${service?.price})
+{service?.name_c || service?.name} (${service?.price_c || service?.price})
           </p>
           <p className="text-sm text-secondary-600">
             <ApperIcon name="User" className="inline h-4 w-4 mr-1" />
-            {staff?.name}
+{staff?.name_c || staff?.name}
           </p>
         </div>
         <div className="flex gap-2 ml-4">
@@ -57,11 +57,11 @@ const AppointmentCard = ({
           </Button>
         </div>
       </div>
-      {appointment.notes && (
+{(appointment.notes_c || appointment.notes) && (
         <div className="mt-3 pt-3 border-t border-secondary-100">
+          <h4 className="text-sm font-medium text-primary-600 mb-1">Notes</h4>
           <p className="text-sm text-secondary-600">
-            <ApperIcon name="MessageSquare" className="inline h-4 w-4 mr-1" />
-            {appointment.notes}
+            {appointment.notes_c || appointment.notes}
           </p>
         </div>
       )}

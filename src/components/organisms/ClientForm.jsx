@@ -16,11 +16,11 @@ const ClientForm = ({ client, onSubmit, onCancel }) => {
   useEffect(() => {
     if (client) {
       setFormData({
-        name: client.name,
-        phone: client.phone,
-        email: client.email,
-        notes: client.notes || "",
-        preferences: client.preferences || ""
+name: client.name_c || client.name || "",
+        phone: client.phone_c || client.phone || "",
+        email: client.email_c || client.email || "",
+        notes: client.notes_c || client.notes || "",
+        preferences: client.preferences_c || client.preferences || ""
       });
     }
   }, [client]);
@@ -33,8 +33,15 @@ const ClientForm = ({ client, onSubmit, onCancel }) => {
       return;
     }
 
-    try {
-      await onSubmit(formData);
+try {
+      const clientData = {
+        name_c: formData.name,
+        phone_c: formData.phone,
+        email_c: formData.email,
+        notes_c: formData.notes,
+        preferences_c: formData.preferences
+      };
+      await onSubmit(clientData);
       toast.success(client ? "Client updated successfully" : "Client created successfully");
     } catch (error) {
       toast.error("Failed to save client");

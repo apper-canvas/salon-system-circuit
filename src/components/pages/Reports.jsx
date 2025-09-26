@@ -47,10 +47,11 @@ const Reports = () => {
 
   // Calculate revenue data
   const revenueData = appointments
-    .filter(apt => apt.status === "completed")
+.filter(apt => (apt.status_c || apt.status) === "completed")
     .reduce((total, apt) => {
-      const service = services.find(s => s.Id === apt.serviceId);
-      return total + (service?.price || 0);
+      const serviceId = apt.service_id_c?.Id || apt.serviceId;
+      const service = services.find(s => s.Id === serviceId);
+      return total + (service?.price_c || service?.price || 0);
     }, 0);
 
   // Monthly revenue chart data
@@ -97,7 +98,7 @@ const Reports = () => {
         foreColor: '#8B5A8C'
       },
       colors: ['#FF6B9D', '#8B5A8C', '#D4A5D6', '#B07DB8', '#7A4F7C'],
-      labels: services.slice(0, 5).map(s => s.name),
+labels: services.slice(0, 5).map(s => s.name_c || s.name),
       legend: {
         position: 'bottom'
       },
@@ -137,10 +138,10 @@ const Reports = () => {
     series: [{
       name: 'Appointments',
       data: [
-        appointments.filter(apt => apt.status === 'completed').length,
-        appointments.filter(apt => apt.status === 'pending').length,
-        appointments.filter(apt => apt.status === 'cancelled').length,
-        appointments.filter(apt => apt.status === 'confirmed').length
+appointments.filter(apt => (apt.status_c || apt.status) === 'completed').length,
+        appointments.filter(apt => (apt.status_c || apt.status) === 'pending').length,
+        appointments.filter(apt => (apt.status_c || apt.status) === 'cancelled').length,
+        appointments.filter(apt => (apt.status_c || apt.status) === 'confirmed').length
       ]
     }]
   };
@@ -239,7 +240,7 @@ const Reports = () => {
             <div>
               <p className="text-sm font-medium text-secondary-600">Avg. Service Value</p>
               <p className="text-3xl font-bold text-primary-800 mt-2 font-display">
-                ${Math.round(revenueData / appointments.filter(apt => apt.status === 'completed').length) || 0}
+${Math.round(revenueData / appointments.filter(apt => (apt.status_c || apt.status) === 'completed').length) || 0}
               </p>
               <div className="flex items-center mt-2 text-sm text-green-600">
                 <ApperIcon name="TrendingUp" className="h-4 w-4 mr-1" />

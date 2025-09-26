@@ -51,27 +51,29 @@ const Dashboard = () => {
   if (error) return <Error onRetry={loadDashboardData} />;
 
   // Filter today's appointments
-  const todaysAppointments = appointments.filter(appointment => 
-    isToday(new Date(appointment.date))
-  ).sort((a, b) => a.startTime.localeCompare(b.startTime));
+const todaysAppointments = appointments.filter(appointment => 
+    isToday(new Date(appointment.date_c || appointment.date))
+  ).sort((a, b) => (a.start_time_c || a.startTime).localeCompare(b.start_time_c || b.startTime));
 
   // Calculate stats
   const totalRevenue = appointments
     .filter(apt => apt.status === "completed")
     .reduce((sum, apt) => {
-      const service = services.find(s => s.Id === apt.serviceId);
-      return sum + (service?.price || 0);
+const serviceId = apt.service_id_c?.Id || apt.serviceId;
+      const service = services.find(s => s.Id === serviceId);
+      return sum + (service?.price_c || service?.price || 0);
     }, 0);
 
   const todaysRevenue = todaysAppointments
     .filter(apt => apt.status === "completed")
     .reduce((sum, apt) => {
-      const service = services.find(s => s.Id === apt.serviceId);
-      return sum + (service?.price || 0);
+const serviceId = apt.service_id_c?.Id || apt.serviceId;
+      const service = services.find(s => s.Id === serviceId);
+      return sum + (service?.price_c || service?.price || 0);
     }, 0);
 
-  const activeClients = clients.length;
-  const pendingAppointments = appointments.filter(apt => apt.status === "pending").length;
+const activeClients = clients.length;
+  const pendingAppointments = appointments.filter(apt => (apt.status_c || apt.status) === "pending").length;
 
   return (
     <div className="space-y-8">
@@ -131,10 +133,13 @@ const Dashboard = () => {
           />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {todaysAppointments.map(appointment => {
-              const client = clients.find(c => c.Id === appointment.clientId);
-              const service = services.find(s => s.Id === appointment.serviceId);
-              const staffMember = staff.find(s => s.Id === appointment.staffId);
+{todaysAppointments.map(appointment => {
+              const clientId = appointment.client_id_c?.Id || appointment.clientId;
+              const serviceId = appointment.service_id_c?.Id || appointment.serviceId;
+              const staffId = appointment.staff_id_c?.Id || appointment.staffId;
+              const client = clients.find(c => c.Id === clientId);
+              const service = services.find(s => s.Id === serviceId);
+              const staffMember = staff.find(s => s.Id === staffId);
 
               return (
                 <AppointmentCard
@@ -159,8 +164,8 @@ const Dashboard = () => {
           </div>
           <div className="space-y-2">
             {staff.slice(0, 3).map(member => (
-              <div key={member.Id} className="flex items-center justify-between">
-                <span className="text-sm text-primary-700">{member.name}</span>
+<div key={member.Id} className="flex items-center justify-between">
+                <span className="text-sm text-primary-700">{member.name_c || member.name}</span>
                 <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
                   Available
                 </span>
@@ -175,10 +180,10 @@ const Dashboard = () => {
             <ApperIcon name="Scissors" className="h-5 w-5 text-accent-600" />
           </div>
           <div className="space-y-2">
-            {services.slice(0, 3).map(service => (
+{services.slice(0, 3).map(service => (
               <div key={service.Id} className="flex items-center justify-between">
-                <span className="text-sm text-primary-700">{service.name}</span>
-                <span className="text-xs text-secondary-600">${service.price}</span>
+<span className="text-sm text-primary-700">{service.name_c || service.name}</span>
+                <span className="text-sm font-medium text-accent-600">${service.price_c || service.price}</span>
               </div>
             ))}
           </div>
@@ -192,8 +197,8 @@ const Dashboard = () => {
           <div className="text-3xl font-bold text-primary-800 font-display mb-2">
             ${todaysRevenue.toLocaleString()}
           </div>
-          <p className="text-sm text-secondary-600">
-            From {todaysAppointments.filter(apt => apt.status === "completed").length} completed appointments
+<p className="text-sm text-secondary-600">
+            From {todaysAppointments.filter(apt => (apt.status_c || apt.status) === "completed").length} completed appointments
           </p>
         </div>
       </div>

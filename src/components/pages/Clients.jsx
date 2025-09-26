@@ -36,12 +36,14 @@ const Clients = () => {
 
   const handleCreateClient = async (clientData) => {
     try {
-      const newClient = await clientService.create({
+const newClient = await clientService.create({
         ...clientData,
-        createdAt: new Date().toISOString().split('T')[0]
+        created_at_c: new Date().toISOString().split('T')[0]
       });
-      setClients(prev => [...prev, newClient]);
-      setShowForm(false);
+if (newClient) {
+        setClients(prev => [...prev, newClient]);
+        setShowForm(false);
+      }
     } catch (error) {
       throw error;
     }
@@ -49,10 +51,12 @@ const Clients = () => {
 
   const handleUpdateClient = async (clientData) => {
     try {
-      const updatedClient = await clientService.update(selectedClient.Id, clientData);
-      setClients(prev => prev.map(client => 
-        client.Id === selectedClient.Id ? updatedClient : client
-      ));
+const updatedClient = await clientService.update(selectedClient.Id, clientData);
+      if (updatedClient) {
+        setClients(prev => prev.map(client => 
+          client.Id === selectedClient.Id ? updatedClient : client
+        ));
+      }
       setShowForm(false);
       setSelectedClient(null);
     } catch (error) {
@@ -66,12 +70,12 @@ const Clients = () => {
   };
 
   const handleBookAppointment = (client) => {
-    console.log("Book appointment for:", client.name);
+console.log("Book appointment for:", client.name_c || client.name);
     // This would navigate to appointment booking with pre-selected client
   };
 
   const handleViewHistory = (client) => {
-    console.log("View history for:", client.name);
+console.log("View history for:", client.name_c || client.name);
     // This would show appointment history for the client
   };
 
@@ -93,9 +97,9 @@ const Clients = () => {
 
   // Filter clients based on search term
   const filteredClients = clients.filter(client =>
-    client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    client.phone.includes(searchTerm) ||
-    client.email.toLowerCase().includes(searchTerm.toLowerCase())
+(client.name_c || client.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (client.phone_c || client.phone || "").includes(searchTerm) ||
+    (client.email_c || client.email || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

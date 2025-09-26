@@ -37,23 +37,27 @@ const Services = () => {
   if (error) return <Error onRetry={loadServices} />;
 
   // Get unique categories
-  const categories = ["all", ...new Set(services.map(service => service.category))];
+const categories = ["all", ...new Set(services.map(service => service.category_c || service.category).filter(Boolean))];
 
-  // Filter services
+  // Filter and search logic
   const filteredServices = services.filter(service => {
-    const matchesSearch = service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         service.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || service.category === selectedCategory;
+    const name = service.name_c || service.name || "";
+    const description = service.description_c || service.description || "";
+    const category = service.category_c || service.category || "";
+    const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   // Group services by category
   const servicesByCategory = {};
-  filteredServices.forEach(service => {
-    if (!servicesByCategory[service.category]) {
-      servicesByCategory[service.category] = [];
+filteredServices.forEach(service => {
+    const category = service.category_c || service.category || "Other";
+    if (!servicesByCategory[category]) {
+      servicesByCategory[category] = [];
     }
-    servicesByCategory[service.category].push(service);
+    servicesByCategory[category].push(service);
   });
 
   const getCategoryIcon = (category) => {
@@ -139,7 +143,7 @@ const Services = () => {
             <div>
               <p className="text-sm text-secondary-600">Avg. Price</p>
               <p className="text-2xl font-bold text-primary-800 font-display">
-                ${Math.round(services.reduce((sum, s) => sum + s.price, 0) / services.length) || 0}
+${Math.round(services.reduce((sum, s) => sum + (s.price_c || s.price || 0), 0) / services.length) || 0}
               </p>
             </div>
             <ApperIcon name="DollarSign" className="h-8 w-8 text-accent-600" />
@@ -212,7 +216,7 @@ const Services = () => {
                     </div>
 
                     <div className="flex items-center justify-between pt-4 border-t border-secondary-100">
-                      <Badge variant={getCategoryColor(service.category)}>
+<Badge variant={getCategoryColor(service.category_c || service.category)}>
                         {service.category}
                       </Badge>
                       <div className="flex gap-2">

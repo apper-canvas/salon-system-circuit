@@ -53,8 +53,10 @@ const Calendar = () => {
 
   const handleCreateAppointment = async (appointmentData) => {
     try {
-      const newAppointment = await appointmentService.create(appointmentData);
-      setAppointments(prev => [...prev, newAppointment]);
+const newAppointment = await appointmentService.create(appointmentData);
+      if (newAppointment) {
+        setAppointments(prev => [...prev, newAppointment]);
+      }
       setShowForm(false);
       setSelectedAppointment(null);
     } catch (error) {
@@ -64,10 +66,12 @@ const Calendar = () => {
 
   const handleUpdateAppointment = async (appointmentData) => {
     try {
-      const updatedAppointment = await appointmentService.update(selectedAppointment.Id, appointmentData);
-      setAppointments(prev => prev.map(apt => 
-        apt.Id === selectedAppointment.Id ? updatedAppointment : apt
-      ));
+const updatedAppointment = await appointmentService.update(selectedAppointment.Id, appointmentData);
+      if (updatedAppointment) {
+        setAppointments(prev => prev.map(apt => 
+          apt.Id === selectedAppointment.Id ? updatedAppointment : apt
+        ));
+      }
       setShowForm(false);
       setSelectedAppointment(null);
     } catch (error) {
@@ -82,8 +86,10 @@ const Calendar = () => {
 
   const handleCancelAppointment = async (appointmentId) => {
     try {
-      await appointmentService.delete(appointmentId);
-      setAppointments(prev => prev.filter(apt => apt.Id !== appointmentId));
+const deleted = await appointmentService.delete(appointmentId);
+      if (deleted) {
+        setAppointments(prev => prev.filter(apt => apt.Id !== appointmentId));
+      }
     } catch (error) {
       console.error("Failed to cancel appointment:", error);
     }
@@ -174,9 +180,8 @@ const Calendar = () => {
       <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
         {weekDays.map(day => {
           const dayAppointments = weekAppointments.filter(appointment => 
-            isSameDay(new Date(appointment.date), day)
-          ).sort((a, b) => a.startTime.localeCompare(b.startTime));
-
+isSameDay(new Date(appointment.date_c || appointment.date), day)
+          ).sort((a, b) => (a.start_time_c || a.startTime).localeCompare(b.start_time_c || b.startTime));
           return (
             <div key={day.toISOString()} className="space-y-3">
               <div className="text-center py-3 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-lg border border-secondary-200">
@@ -200,9 +205,12 @@ const Calendar = () => {
                   </div>
                 ) : (
                   dayAppointments.map(appointment => {
-                    const client = clients.find(c => c.Id === appointment.clientId);
-                    const service = services.find(s => s.Id === appointment.serviceId);
-                    const staffMember = staff.find(s => s.Id === appointment.staffId);
+const clientId = appointment.client_id_c?.Id || appointment.clientId;
+                    const serviceId = appointment.service_id_c?.Id || appointment.serviceId;
+                    const staffId = appointment.staff_id_c?.Id || appointment.staffId;
+                    const client = clients.find(c => c.Id === clientId);
+                    const service = services.find(s => s.Id === serviceId);
+                    const staffMember = staff.find(s => s.Id === staffId);
 
                     return (
                       <div key={appointment.Id} className="relative">
@@ -244,7 +252,7 @@ const Calendar = () => {
             <ApperIcon name="CheckCircle" className="h-5 w-5 text-green-600" />
           </div>
           <p className="text-2xl font-bold text-primary-800 font-display">
-            {weekAppointments.filter(apt => apt.status === "confirmed").length}
+{weekAppointments.filter(apt => (apt.status_c || apt.status) === "confirmed").length}
           </p>
           <p className="text-sm text-secondary-600">Ready to go</p>
         </div>
@@ -255,7 +263,7 @@ const Calendar = () => {
             <ApperIcon name="Clock" className="h-5 w-5 text-yellow-600" />
           </div>
           <p className="text-2xl font-bold text-primary-800 font-display">
-            {weekAppointments.filter(apt => apt.status === "pending").length}
+{weekAppointments.filter(apt => (apt.status_c || apt.status) === "pending").length}
           </p>
           <p className="text-sm text-secondary-600">Need confirmation</p>
         </div>
