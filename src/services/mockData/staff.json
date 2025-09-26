@@ -1,0 +1,114 @@
+[
+  {
+    "Id": 1,
+    "name": "Sarah Johnson",
+    "role": "Stylist",
+    "email": "sarah.j@salonhub.com",
+    "phone": "(555) 111-2222",
+    "schedule": {
+      "monday": ["9:00", "17:00"],
+      "tuesday": ["9:00", "17:00"],
+      "wednesday": ["10:00", "18:00"],
+      "thursday": ["9:00", "17:00"],
+      "friday": ["9:00", "17:00"],
+      "saturday": ["8:00", "16:00"],
+      "sunday": "off"
+    }
+  },
+  {
+    "Id": 2,
+    "name": "Maria Garcia",
+    "role": "Esthetician",
+    "email": "maria.g@salonhub.com",
+    "phone": "(555) 222-3333",
+    "schedule": {
+      "monday": ["10:00", "18:00"],
+      "tuesday": ["9:00", "17:00"],
+      "wednesday": ["9:00", "17:00"],
+      "thursday": ["10:00", "18:00"],
+      "friday": ["9:00", "17:00"],
+      "saturday": ["9:00", "15:00"],
+      "sunday": "off"
+    }
+  },
+  {
+    "Id": 3,
+    "name": "Jennifer Lee",
+    "role": "Makeup Artist",
+    "email": "jennifer.l@salonhub.com",
+    "phone": "(555) 333-4444",
+    "schedule": {
+      "monday": "off",
+      "tuesday": ["11:00", "19:00"],
+      "wednesday": ["11:00", "19:00"],
+      "thursday": ["11:00", "19:00"],
+      "friday": ["10:00", "18:00"],
+      "saturday": ["8:00", "16:00"],
+      "sunday": ["10:00", "16:00"]
+    }
+  },
+  {
+    "Id": 4,
+    "name": "Amanda Wilson",
+    "role": "Nail Technician",
+    "email": "amanda.w@salonhub.com",
+    "phone": "(555) 444-5555",
+    "schedule": {
+      "monday": ["9:00", "17:00"],
+      "tuesday": ["9:00", "17:00"],
+      "wednesday": ["9:00", "17:00"],
+      "thursday": ["9:00", "17:00"],
+      "friday": ["9:00", "17:00"],
+      "saturday": ["9:00", "15:00"],
+      "sunday": "off"
+    }
+  },
+  {
+    "Id": 5,
+    "name": "Rachel Martinez",
+    "role": "Massage Therapist",
+    "email": "rachel.m@salonhub.com",
+    "phone": "(555) 555-6666",
+    "schedule": {
+      "monday": ["10:00", "18:00"],
+      "tuesday": ["10:00", "18:00"],
+      "wednesday": "off",
+      "thursday": ["10:00", "18:00"],
+      "friday": ["10:00", "18:00"],
+      "saturday": ["9:00", "17:00"],
+      "sunday": ["11:00", "17:00"]
+    }
+  },
+  {
+    "Id": 6,
+    "name": "Taylor Kim",
+    "role": "Stylist",
+    "email": "taylor.k@salonhub.com",
+    "phone": "(555) 666-7777",
+    "schedule": {
+      "monday": ["9:00", "17:00"],
+      "tuesday": ["9:00", "17:00"],
+      "wednesday": ["9:00", "17:00"],
+      "thursday": "off",
+      "friday": ["9:00", "17:00"],
+      "saturday": ["8:00", "16:00"],
+      "sunday": ["10:00", "16:00"]
+    }
+  },
+  {
+    "Id": 7,
+    "name": "Ashley Davis",
+    "role": "Manager",
+    "email": "ashley.d@salonhub.com",
+    "phone": "(555) 777-8888",
+    "schedule": {
+      "monday": ["8:00", "18:00"],
+      "tuesday": ["8:00", "18:00"],
+      "wednesday": ["8:00", "18:00"],
+      "thursday": ["8:00", "18:00"],
+      "friday": ["8:00", "18:00"],
+      "saturday": ["8:00", "16:00"],
+      "sunday": "off"
+    }
+  }
+]

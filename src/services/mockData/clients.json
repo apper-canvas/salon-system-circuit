@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 1,
+    "name": "Emma Thompson",
+    "phone": "(555) 123-4567",
+    "email": "emma.thompson@email.com",
+    "notes": "Prefers natural hair colors, sensitive to harsh chemicals",
+    "preferences": "Organic products, afternoon appointments",
+    "createdAt": "2023-06-15"
+  },
+  {
+    "Id": 2,
+    "name": "Sarah Mitchell",
+    "phone": "(555) 234-5678",
+    "email": "sarah.mitchell@email.com",
+    "notes": "Regular client for 2+ years, loves bold colors",
+    "preferences": "Saturday mornings, coffee during service",
+    "createdAt": "2022-03-20"
+  },
+  {
+    "Id": 3,
+    "name": "Jessica Rodriguez",
+    "phone": "(555) 345-6789",
+    "email": "jessica.rodriguez@email.com",
+    "notes": "Allergic to ammonia-based products",
+    "preferences": "Weekday evenings, minimal small talk",
+    "createdAt": "2023-09-10"
+  },
+  {
+    "Id": 4,
+    "name": "Michelle Chen",
+    "phone": "(555) 456-7890",
+    "email": "michelle.chen@email.com",
+    "notes": "Bride-to-be, wedding in March",
+    "preferences": "Trial runs before events, detailed consultations",
+    "createdAt": "2023-11-05"
+  },
+  {
+    "Id": 5,
+    "name": "Amanda Wilson",
+    "phone": "(555) 567-8901",
+    "email": "amanda.wilson@email.com",
+    "notes": "Business professional, quick services preferred",
+    "preferences": "Lunch break appointments, gel manicures only",
+    "createdAt": "2023-08-22"
+  },
+  {
+    "Id": 6,
+    "name": "Lisa Johnson",
+    "phone": "(555) 678-9012",
+    "email": "lisa.johnson@email.com",
+    "notes": "Anti-aging treatments, mature skin",
+    "preferences": "Quiet environment, premium products",
+    "createdAt": "2023-05-18"
+  },
+  {
+    "Id": 7,
+    "name": "Rachel Green",
+    "phone": "(555) 789-0123",
+    "email": "rachel.green@email.com",
+    "notes": "Chronic back pain, gentle massage techniques",
+    "preferences": "Warm room temperature, soft music",
+    "createdAt": "2023-07-30"
+  },
+  {
+    "Id": 8,
+    "name": "Natalie Brown",
+    "phone": "(555) 890-1234",
+    "email": "natalie.brown@email.com",
+    "notes": "Fashion photographer, creative makeup looks",
+    "preferences": "Bold colors, latest trends, photo shoots",
+    "createdAt": "2023-10-12"
+  },
+  {
+    "Id": 9,
+    "name": "Olivia Davis",
+    "phone": "(555) 901-2345",
+    "email": "olivia.davis@email.com",
+    "notes": "Sensitive eyes, careful with eyebrow services",
+    "preferences": "Natural look, minimal pain",
+    "createdAt": "2023-04-25"
+  },
+  {
+    "Id": 10,
+    "name": "Sophia Garcia",
+    "phone": "(555) 012-3456",
+    "email": "sophia.garcia@email.com",
+    "notes": "Frequent traveler, low-maintenance styles",
+    "preferences": "Long-lasting treatments, simple styles",
+    "createdAt": "2023-12-03"
+  }
+]

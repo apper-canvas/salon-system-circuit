@@ -1,0 +1,112 @@
+[
+  {
+    "Id": 1,
+    "clientId": 1,
+    "staffId": 1,
+    "serviceId": 1,
+    "date": "2024-01-15",
+    "startTime": "09:00",
+    "endTime": "10:30",
+    "status": "confirmed",
+    "notes": "First time client, requested highlights"
+  },
+  {
+    "Id": 2,
+    "clientId": 2,
+    "staffId": 2,
+    "serviceId": 3,
+    "date": "2024-01-15",
+    "startTime": "10:00",
+    "endTime": "11:00",
+    "status": "completed",
+    "notes": ""
+  },
+  {
+    "Id": 3,
+    "clientId": 3,
+    "staffId": 1,
+    "serviceId": 2,
+    "date": "2024-01-15",
+    "startTime": "11:00",
+    "endTime": "12:00",
+    "status": "confirmed",
+    "notes": "Regular client, usual color touch-up"
+  },
+  {
+    "Id": 4,
+    "clientId": 4,
+    "staffId": 3,
+    "serviceId": 4,
+    "date": "2024-01-15",
+    "startTime": "14:00",
+    "endTime": "15:30",
+    "status": "pending",
+    "notes": "Bridal party member"
+  },
+  {
+    "Id": 5,
+    "clientId": 5,
+    "staffId": 4,
+    "serviceId": 5,
+    "date": "2024-01-16",
+    "startTime": "09:30",
+    "endTime": "10:30",
+    "status": "confirmed",
+    "notes": "Gel manicure requested"
+  },
+  {
+    "Id": 6,
+    "clientId": 6,
+    "staffId": 2,
+    "serviceId": 6,
+    "date": "2024-01-16",
+    "startTime": "11:00",
+    "endTime": "12:00",
+    "status": "completed",
+    "notes": "Anti-aging facial"
+  },
+  {
+    "Id": 7,
+    "clientId": 7,
+    "staffId": 5,
+    "serviceId": 7,
+    "date": "2024-01-16",
+    "startTime": "15:00",
+    "endTime": "16:30",
+    "status": "confirmed",
+    "notes": "Deep tissue massage"
+  },
+  {
+    "Id": 8,
+    "clientId": 8,
+    "staffId": 1,
+    "serviceId": 8,
+    "date": "2024-01-17",
+    "startTime": "10:00",
+    "endTime": "11:00",
+    "status": "pending",
+    "notes": "Special event makeup"
+  },
+  {
+    "Id": 9,
+    "clientId": 9,
+    "staffId": 6,
+    "serviceId": 9,
+    "date": "2024-01-17",
+    "startTime": "13:00",
+    "endTime": "13:30",
+    "status": "confirmed",
+    "notes": "Eyebrow shaping and tinting"
+  },
+  {
+    "Id": 10,
+    "clientId": 10,
+    "staffId": 7,
+    "serviceId": 10,
+    "date": "2024-01-18",
+    "startTime": "14:00",
+    "endTime": "15:00",
+    "status": "cancelled",
+    "notes": "Client cancelled due to illness"
+  }
+]
